@@ -1,16 +1,22 @@
-let company = {
-    "lineas": 0,
-    "precio_linea": 0.1,
-    "minions": 0,
-    "coste_minion": 10,
-    "dinero": 0,
-    "oficinas": 1,
-    "capacidad_oficinas": 50,
-    "coste_oficina": 1000,
-    "productividad": 10000,
-    "discos_duros": 1,
-    "capacidad_discos_duros": 10000000,
-    "coste_discos_duros": 100
+var company = {};
+
+if (localStorage.company) {
+    company = JSON.parse(localStorage.getItem('company'));
+} else {
+    company = {
+        "lineas": 0,
+        "precio_linea": 0.1,
+        "minions": 0,
+        "coste_minion": 10,
+        "dinero": 0,
+        "oficinas": 1,
+        "capacidad_oficinas": 50,
+        "coste_oficina": 1000,
+        "productividad": 10000,
+        "discos_duros": 1,
+        "capacidad_discos_duros": 10000000,
+        "coste_discos_duros": 100
+    }
 }
 
 let powerups_costs = {
@@ -38,7 +44,7 @@ document.getElementById("comprar_disco_duro").addEventListener("click", comprarD
 document.getElementById("contratar_formador").addEventListener("click", () => comprarPowerUpProductividad(powerups_costs.formador, 10, "contratar_formador"));
 document.getElementById("comprar_maquina_cafe").addEventListener("click", () => comprarPowerUpProductividad(powerups_costs.maquina_cafe, 2, "comprar_maquina_cafe"));
 document.getElementById("comprar_incentivos").addEventListener("click", () => comprarPowerUpProductividad(powerups_costs.incentivos, 10));
-
+document.getElementById("lineas_escritas").innerText = company.lineas;
 
 function mensajeInfo(texto){
     let caja_info = document.getElementById("mensajes_info");
@@ -69,6 +75,7 @@ function escribirLinea() {
         company.lineas++;
         document.getElementById("lineas_escritas").innerText = company.lineas;
     }
+    guardarPartida();
 }
 
 function escribirLineaAutomatico() {
@@ -177,4 +184,8 @@ function cambiarProductividad(valor) {
     company.productividad /= valor;
     clearInterval(timer);
     comenzarAutoclicker();
+}
+
+function guardarPartida() {
+    localStorage.setItem('company', JSON.stringify(company));
 }
